@@ -1,25 +1,20 @@
-<h1><%= @widget.name %></h1>
-<h2>ID #<%= @widget.id %></h2>
+<header class="widget-title">
+  <h1 class="widget-title__name"><%= @widget.name %></h1>
+  <h2 class="widget-title__id">ID #<%= styled_widget_id(@widget.widget_id) %></h2>
+</header>
+
 <% if flash[:notice].present? %>
   <aside>
     <%= flash[:notice] %>
   </aside>
 <% end %>
-<section>
-  <h3>Rate This Widget</h3>
 
-  <ol>
-    <% (1..5).each do |rating| %>
-      <li>
-        <%= button_to rating, widget_ratings_path, params: {
-                                                             widget_id: @widget.id,
-                                                             rating: rating
-                                                           }
-        %>
-      </li>
-    <% end %>
-  </ol>
-</section>
+<%= widget_rating_component(@widget) %>
+
+<h3>
+  Built by <%= @widget.manufacturer.name %>
+  out of <%= @widget.manufacturer.address.country %>
+</h3>
 <%= link_to "/manufacturers/#{ @widget.manufacturer_id }" do %>
   View Manufacturer
 <% end %>
