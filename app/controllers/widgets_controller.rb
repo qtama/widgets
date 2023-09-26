@@ -1,7 +1,7 @@
 class WidgetsController < ApplicationController
   def index
     @widgets = [
-      OpenStruct.new(id: 1, name: 'Stembolt'),
+      OpenStruct.new(id: 1234, name: 'Stembolt'),
       OpenStruct.new(id: 2, name: 'Flux Capacitor')
     ]
   end
@@ -16,13 +16,15 @@ class WidgetsController < ApplicationController
       )
     )
 
+    widget_name = params[:id].to_i == 1234 ? 'Stembolt' : "Widget #{params[:id]}"
+
     @widget = OpenStruct.new(
       id: params[:id],
       manufacturer_id: manufacturer,
       manufacturer: manufacturer,
       # manufacturer_name: "Sector 7G",
       # manufacturer_country: "UK",
-      name: "Widget #{params[:id]}"
+      name: widget_name
     )
 
     @widget.instance_eval do

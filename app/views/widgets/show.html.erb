@@ -1,7 +1,6 @@
-<header class="widget-title">
-  <h1 class="widget-title__name"><%= @widget.name %></h1>
-  <h2 class="widget-title__id">ID #<%= styled_widget_id(@widget.widget_id) %></h2>
-</header>
+<h1>Widget Information</h1>
+<h2 data-testid="widget-name"><%= @widget.name %></h2>
+<h2>ID #<%= styled_widget_id(@widget.widget_id) %></h2>
 
 <% if flash[:notice].present? %>
   <aside>
