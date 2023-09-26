@@ -1,26 +1,23 @@
 require 'test_helper'
 
+# Register driver
 Capybara.register_driver :root_headles_chrome do |app|
-  capabilities =
-    Selenium::WebDriver::Remote::Capabilities.chrome(
-      'goog:chromeOptions': {
-        args: [
-          'headless',
-          'disable-gpu',
-          'no-sandbox',
-          'disable-dev-shm-usage',
-          'whitelisted-ips'
-        ]
-      },
-      'goog:loggingPrefs': { browser: 'ALL' }
-    )
+  driver_options = Selenium::WebDriver::Chrome::Options.new
+  driver_options.options[:args] = [
+    'headless',
+    'disable-gpu',
+    'no-sandbox',
+    'disable-dev-shm-usage',
+    'whitelisted-ips'
+  ]
+  driver_options.logging_prefs = { browser: 'ALL' }
 
-    Capybara::Selenium::Driver.new(
-      app,
-      browser: :chrome,
-      capabilities: capabilities
-    )
-end # register_driver
+  Capybara::Selenium::Driver.new(
+    app,
+    browser: :chrome,
+    options: driver_options
+  )
+end
 
 require 'support/with_clues'
 
