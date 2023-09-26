@@ -2,9 +2,9 @@ Rails.application.routes.draw do
   resources :widgets, only: [:show, :index]
   resources :widget_ratings, only: [:create]
 
-  namespace :customer_service do
-    resources :widgets, only: [:show, :update, :destroy]
-  end
+  # namespace :customer_service do
+  #   resources :widgets, only: [:show, :update, :destroy]
+  # end
 
   if Rails.env.development?
     resources :design_system_docs, only: [:index]
