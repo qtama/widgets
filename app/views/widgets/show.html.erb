@@ -1,6 +1,8 @@
 <h1>Widget Information</h1>
 <h2 data-testid="widget-name"><%= @widget.name %></h2>
-<h2>ID #<%= styled_widget_id(@widget.widget_id) %></h2>
+<h2>
+  ID #<%= styled_widget_id(@widget.user_facing_identifier) %>
+</h2>
 
 <% if flash[:notice].present? %>
   <aside>
@@ -12,7 +14,6 @@
 
 <h3>
   Built by <%= @widget.manufacturer.name %>
-  out of <%= @widget.manufacturer.address.country %>
 </h3>
 <%= link_to "/manufacturers/#{ @widget.manufacturer_id }" do %>
   View Manufacturer

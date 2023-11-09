@@ -20,6 +20,9 @@ gem 'bundler-audit'
 # traditional one-line-per-event format
 gem 'lograge'
 
+# Sidekiq handles background jobs
+gem 'sidekiq'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 6.1.7', '>= 6.1.7.6'
 # Use postgresql as the database for Active Record
@@ -47,7 +50,24 @@ gem 'bootsnap', '>= 1.4.4', require: false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'debug'
+
+  # We use Factory Bot in place of fixtures
+  # to generate realistic test data
+  gem 'factory_bot_rails'
+
+  # Foreman runs all processes for local development
+  gem 'foreman'
+
+  # We use Faker to generate values for attribures
+  # in each factory
+  gem 'faker'
+
+  # We use rubocop to check that our code complies to
+  # best practices and has unified style
+  gem 'rubocop'
+  gem 'rubocop-minitest'
+  gem 'rubocop-performance'
 end
 
 group :development do
@@ -56,6 +76,7 @@ group :development do
   # Display performance information such as SQL time and flame graphs for each request in your browser.
   # Can be configured to work on production as well see: https://github.com/MiniProfiler/rack-mini-profiler/blob/master/README.md
   gem 'rack-mini-profiler', '~> 2.0'
+  gem 'ruby-lsp-rails'
 end
 
 group :test do

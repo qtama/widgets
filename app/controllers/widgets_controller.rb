@@ -1,42 +1,47 @@
 class WidgetsController < ApplicationController
+  def new
+    @widget = Widget.new
+    @manufacturers = Manufacturer.all
+  end
+
+  def create
+    widget_params = params.require(:widget)
+                          .permit(:name, :price_cents, :manufacturer_id)
+    if widget_params[:price_cents].present?
+      widget_params[:price_cents] = (
+        BigDecimal(widget_params[:price_cents]) * 100
+      ).to_i
+    end
+
+    result = WidgetCreator.new.create_widget(
+      Widget.new(widget_params)
+    )
+
+    if result.created?
+      redirect_to widget_path(result.widget)
+    else
+      @widget = result.widget
+      @manufacturers = Manufacturer.all
+
+      render :new
+    end
+  end
+
   def index
-    @widgets = [
-      OpenStruct.new(id: 1234, name: 'Stembolt'),
-      OpenStruct.new(id: 2, name: 'Flux Capacitor')
-    ]
+    @widgets = Widget.all
   end
 
   def show
-    manufacturer = OpenStruct.new(
-      id: rand(100),
-      name: 'Sector 7G',
-      address: OpenStruct.new(
-        id: rand(100),
-        country: 'UK'
-      )
-    )
-
-    widget_name = params[:id].to_i == 1234 ? 'Stembolt' : "Widget #{params[:id]}"
-
-    @widget = OpenStruct.new(
-      id: params[:id],
-      manufacturer_id: manufacturer,
-      manufacturer: manufacturer,
-      # manufacturer_name: "Sector 7G",
-      # manufacturer_country: "UK",
-      name: widget_name
-    )
-
-    @widget.instance_eval do
-      def widget_id
-        if id.to_s.length < 3
-          id.to_s
-        else
-          "#{id.to_s[..-3]}.#{id.to_s[-2..]}"
-        end
-      end
-    end
-
-    # @widget_presenter = WidgetPresenter.new(widget)
+    @widget = Widget.find(params[:id])
   end
+
+  # private
+
+  # def widget_params
+  #   params.require(:widget)
+  #         .permit(:name, :price_cents, :manufacturer_id)
+  #         .tap do |widget_params|
+  #           widget_params[:price_cents] = Price.new(widget_params[:price_cents]).cents
+  #         end
+  # end
 end
